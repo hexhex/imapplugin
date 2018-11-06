@@ -1,0 +1,3 @@
+header(T, V) :- &msg_body[wrong_server, "INBOX", 1](T, V).
+
+@acthexStop.

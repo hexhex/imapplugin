@@ -1,0 +1,10 @@
+@login(imap_server_connection_1, "localhost", 10143, "user1@example.com", "password123", 0) :- not &logged_in[imap_server_connection_1].
+
+delete(F) :- &filter[imap_server_connection_1, M, "deleted"](ID), &mailbox[imap_server_connection_1, "*", "*"](M), &msg_header[imap_server_connection_1, M, ID](from, F).
+
+@set_flag(imap_server_connection_1, M, ID, "Deleted") :- &filter[imap_server_connection_1, M, "all"](ID), &mailbox[imap_server_connection_1, "*", "*"](M), &msg_header[imap_server_connection_1, M, ID](from, F), delete(F).
+
+
+deleted(S) :- &filter[imap_server_connection_1, M, "deleted"](ID), &mailbox[imap_server_connection_1, "*", "*"](M), &msg_header[imap_server_connection_1, M, ID](subject, S).
+@acthexStop :- deleted("not-deleted message 1").
+

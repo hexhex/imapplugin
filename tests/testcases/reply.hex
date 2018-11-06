@@ -1,0 +1,11 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+id(ID) :- &filter[test_server, "Mailbox1", "SUBJECT 'subject-a'"](ID).
+
+@reply(test_server, "Mailbox1", ID, "reply-text") :- &logged_in[test_server], id(ID).
+
+r(ID) :- &filter[test_server, "Mailbox1", "Draft"](ID).
+draft(T, V) :- &msg_header[test_server, "Mailbox1", ID](T, V), r(ID).
+draft(body, V) :- &msg_body[test_server, "Mailbox1", ID](V), r(ID).
+
+@acthexStop :- draft(_, _), &logged_in[test_server].

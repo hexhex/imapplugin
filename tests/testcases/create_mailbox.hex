@@ -1,0 +1,11 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+create("Mailbox3").
+create("Mailbox2.Mailbox4").
+create("Mailbox2.Mailbox1.Mailbox5").
+
+@create_mailbox(test_server, M) :- create(M), &logged_in[test_server], not mailbox("Mailbox3").
+
+mailbox(M) :- &mailbox[test_server, "*", "*"](M), &logged_in[test_server].
+
+@acthexStop :- mailbox("Mailbox3"), &logged_in[test_server].

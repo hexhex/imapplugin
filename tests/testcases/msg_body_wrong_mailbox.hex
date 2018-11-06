@@ -1,0 +1,5 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+header(T, V) :- &msg_body[test_server, "WRONG_MAILBOX", 1](T, V), &logged_in[test_server].
+
+@acthexStop :- &logged_in[test_server].

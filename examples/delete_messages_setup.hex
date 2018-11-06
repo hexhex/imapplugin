@@ -1,0 +1,5 @@
+@login(imap_server_connection_1, "localhost", 10143, "user1@example.com", "password123", 0) :- not &logged_in[imap_server_connection_1].
+
+@set_flag(imap_server_connection_1, "INBOX", ID, "Deleted"){1} :- &filter[imap_server_connection_1, "INBOX", "subject 'deleted message' not subject 'not-deleted message'"](ID).
+
+@acthexStop{2} :- &logged_in[imap_server_connection_1].

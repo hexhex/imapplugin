@@ -1,0 +1,9 @@
+@login(imap_server_connection_1, "localhost", 10143, "user1@example.com", "password123", 0) :- not &logged_in[imap_server_connection_1].
+msg(F, ID) :- &filter[imap_server_connection_1, "A", "all"](ID), &msg_header[imap_server_connection_1, "A", ID](from, F).
+new_mailbox(F) :- #count{ID : msg(F, ID)} > 5, msg(F, _).
+@create_mailbox(imap_server_connection_1, X){1} :- new_mailbox(F), &concat["MB", F](X), not mailbox("MBuser3@example.com").
+@copy_msg(imap_server_connection_1, M, ID, X){2} :- new_mailbox(F), &filter[imap_server_connection_1, M, Y](ID), &mailbox[imap_server_connection_1, "*", "*"](M), &concat["from '", F, "'"](Y), &concat["MB", F](X), not mailbox("MBuser3@example.com").
+
+mailbox(M) :- &mailbox[imap_server_connection_1, "*", "*"](M).
+
+@acthexStop{3} :- mailbox("MBuser3@example.com").

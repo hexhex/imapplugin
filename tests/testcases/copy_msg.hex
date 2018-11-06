@@ -1,0 +1,10 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+id(ID) :- &filter[test_server, "INBOX.Mailbox1", "from 'from-c'"](ID).
+
+@copy_msg(test_server, "INBOX.Mailbox1", ID, "INBOX.Mailbox2") :- id(ID).
+
+id1(V) :- &filter[test_server, "INBOX.Mailbox1", "from 'from-c'"](ID), &msg_header[test_server, "INBOX.Mailbox1", ID](from, V).
+id2(V) :- &filter[test_server, "INBOX.Mailbox2", "from 'from-c'"](ID), &msg_header[test_server, "INBOX.Mailbox2", ID](from, V).
+
+@acthexStop :- id2(_), id1(_).

@@ -1,0 +1,13 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+@move_msg(test_server, "INBOX.Mailbox1", ID, "INBOX.Mailbox2") :- &filter[test_server, "INBOX.Mailbox1", "from 'from-b'"](ID), &logged_in[test_server].
+
+id1(ID, yes) :- &filter[test_server, "INBOX.Mailbox1", "DELETED"](ID).
+id1(ID, no) :- &filter[test_server, "INBOX.Mailbox1", "NOT DELETED"](ID).
+id2(ID, yes) :- &filter[test_server, "INBOX.Mailbox2", "DELETED"](ID).
+id2(ID, no) :- &filter[test_server, "INBOX.Mailbox2", "NOT DELETED"](ID).
+
+from1(V, D) :- &msg_header[test_server, "INBOX.Mailbox1", ID](from, V), id1(ID, D).
+from2(V, D) :- &msg_header[test_server, "INBOX.Mailbox2", ID](from, V), id2(ID, D).
+
+@acthexStop :- from2("from-b",_).

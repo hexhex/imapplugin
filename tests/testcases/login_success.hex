@@ -1,0 +1,9 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- &get_evaluations(0).
+
+login_successful :- &logged_in[test_server], &get_evaluations(1).
+-login_successful :- not &logged_in[test_server], &get_evaluations(1).
+
+@acthexStop{2} :- login_successful.
+@acthexStop{2} :- -login_successful.
+
+@count_evaluation.

@@ -1,0 +1,5 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0){1} :- not &logged_in[test_server].
+
+-logged_in(wrong_connection_id) :- not &logged_in[wrong_connection_id].
+
+@acthexStop :- &logged_in[test_server], not &logged_in[wrong_connection_id].

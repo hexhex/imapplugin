@@ -1,0 +1,9 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+id(ID) :- &filter[test_server, "INBOX", "ALL"](ID), &logged_in[test_server].
+
+@set_flag(test_server, "INBOX", ID, "Draft") :- id(ID).
+@set_flag(test_server, "INBOX", ID, "Seen") :- id(ID).
+
+@count_evaluation.
+@acthexStop :- &get_evaluations(3).

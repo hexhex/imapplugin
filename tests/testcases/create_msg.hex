@@ -1,0 +1,9 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+@create_msg(test_server, "INBOX", "from-b", "subject-b", to("to-a-1", "to-a-2"), cc("cc-b"), bcc(), "text-b"){2} :- &logged_in[test_server].
+
+id(ID) :- &filter[test_server, "INBOX", "subject 'subject-b'"](ID).
+msg(T, V) :- &msg_header[test_server, "INBOX", ID](T, V), id(ID).
+
+
+@acthexStop{1} :- msg(from, "from-b").

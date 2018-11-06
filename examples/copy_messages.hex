@@ -1,0 +1,6 @@
+@login(imap_server_connection_1, "localhost", 10143, "user1@example.com", "password123", 0) :- not &logged_in[imap_server_connection_1].
+message_to_be_copied(ID) :- &filter[imap_server_connection_1, "A", "subject 'IMAP'"](ID).
+@copy_msg(imap_server_connection_1, "A", ID, "B"){1} :- message_to_be_copied(ID).
+
+@acthexStop{2} :- message_to_be_copied(ID).
+

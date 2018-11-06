@@ -1,0 +1,11 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+
+del(ID) :- &filter[test_server, "INBOX.Mailbox1", "OR FROM 'from-a' FROM 'from-c' NOT DELETED"](ID), &logged_in[test_server].
+@set_flag(test_server, "INBOX.Mailbox1", ID, "Deleted"){1} :- &logged_in[test_server], del(ID).
+@expunge_msgs(test_server, "INBOX.Mailbox1"){2} :- &logged_in[test_server].
+
+from(V) :- &msg_header[test_server, M, ID](from, V), &filter[test_server, M, "ALL"](ID), &mailbox[test_server, "*", "*"](M), &logged_in[test_server].
+
+@acthexStop :- not from("from-a"), not from("from-c"), &logged_in[test_server].
+

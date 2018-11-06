@@ -1,0 +1,9 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+id(ID) :- &filter[test_server, "INBOX", "FROM 'matching_sender'"](ID), &logged_in[test_server].
+
+header(ID, T, V) :- &msg_header[test_server, "INBOX", ID](T, V), id(ID).
+
+msg(A, B) :- header(ID, from, A), header(ID, subject, B).
+
+@acthexStop :- msg(_, _).

@@ -1,0 +1,7 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+@rename_mailbox(test_server, "Mailbox2", "INBOX.Mailbox2") :- &logged_in[test_server], mailbox("Mailbox2").
+
+mailbox(M) :- &mailbox[test_server, "*", "*"](M), &logged_in[test_server].
+
+@acthexStop :- not mailbox("Mailbox2"), &logged_in[test_server].

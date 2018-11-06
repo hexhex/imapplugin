@@ -1,0 +1,5 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0){1} :- not &logged_in[test_server].
+
+found(ID) :- &logged_in[test_server], &filter[test_server, "INBOX", "invalid filter"](ID).
+
+@acthexStop{2} :- &logged_in[test_server].

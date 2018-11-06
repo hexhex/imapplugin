@@ -1,0 +1,5 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+@move_msg(wrong_server, "INBOX.Mailbox1", ID, "INBOX.Mailbox2"){1} :- &filter[test_server, "INBOX.Mailbox1", "from 'from-b'"](ID), &logged_in[test_server].
+
+@acthexStop{2} :- &logged_in[test_server].

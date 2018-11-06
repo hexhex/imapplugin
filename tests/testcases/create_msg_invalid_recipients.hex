@@ -1,0 +1,5 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+@create_msg(text_server, "INBOX", "from-a", "subject-a", "to-a", cc(), bcc(), "text-a"){1} :- &logged_in[test_server].
+
+@acthexStop{2} :- &logged_in[test_server].

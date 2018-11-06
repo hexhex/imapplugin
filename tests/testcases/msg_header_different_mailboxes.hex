@@ -1,0 +1,10 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+mailbox("INBOX").
+mailbox("INBOX.MyMailbox").
+
+id(M, ID) :- &filter[test_server, M, "ALL"](ID), &logged_in[test_server], mailbox(M).
+
+subject(V) :- &msg_header[test_server, M, ID](subject, V), id(M, ID).
+
+@acthexStop :- subject(_).

@@ -1,0 +1,5 @@
+@login(test_server, "localhost", 10143, "user1@example.com", "passw0rd123", 0) :- not &logged_in[test_server].
+
+@copy_msg(wrong_server, "INBOX", ID, "INBOX"){1} :- &filter[test_server, "INBOX", "from 'from-a'"](ID).
+
+@acthexStop{2} :- &logged_in[test_server].
