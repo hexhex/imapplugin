@@ -52,8 +52,8 @@ def start_server():
 
             try:
                 logging.info("kill dovecot")
-                pid = int(output[output.index("PID")+1])
-                os.kill(pid, signal.SIGTERM)
+                f = subprocess.Popen([IMAP_SERVER, "stop"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                f.wait()
 
                 logging.info("restart dovecot")
                 f = subprocess.Popen(IMAP_SERVER, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -74,7 +74,8 @@ def start_server():
 def kill_server(pid):
     logging.info("kill dovecot")
     try:
-        os.kill(pid, signal.SIGTERM)
+        f = subprocess.Popen([IMAP_SERVER, "stop"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        f.wait()
     except:
         logging.error("dovecot could not be killed")
 
@@ -165,9 +166,6 @@ def run_hexlite(program, plugin_paths, plugins):
     # process results:
 
     out, err = f.communicate()
-
-    status = int(f.returncode)
-    assert status == 0, "unexpected exit status " + str(status)
 
     assert out == None or len(out) == 0 or (len(out) >= 1 and out.decode().split("\n")[-1] == ""), "unexpected hexlite stdout output " + str(out)
     assert err == None or len(err) == 0 or (len(err) >= 1 and err.decode().split("\n")[-1] == ""), "unexpected hexlite stderr output " + str(err)
