@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/hexhex/imapplugin.svg?branch=master)](https://travis-ci.org/hexhex/imapplugin)
+
 # IMAP Plugin for ACTHEX
 
 This a plugin for interacting with IMAP servers from ACTHEX.
