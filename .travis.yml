@@ -1,0 +1,37 @@
+language: python
+
+python:
+  - "3.5"
+
+install:
+  # install hexlite:
+  - cd $HOME/build/hexhex/imapplugin
+  - sudo apt-get update
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION
+  - source activate test-environment
+  - conda install -c potassco clingo
+  - conda install -c peterschueller hexlite
+  # install dovecot:
+  - cd $HOME
+  - mkdir dovecot
+  - wget https://dovecot.org/releases/2.2/dovecot-2.2.36.tar.gz
+  - tar -xf dovecot-2.2.36.tar.gz
+  - cd dovecot-2.2.36
+  - ./configure --prefix=$HOME/dovecot > /dev/null
+  - make > /dev/null
+  - make install > /dev/null
+  - head -n -5 $HOME/dovecot/share/doc/dovecot/example-config/dovecot.conf > $HOME/dovecot/etc/dovecot/dovecot.conf
+  - printf "\n#protocols = imap\nssl = no\n\ndefault_internal_user = travis\ndefault_login_user = travis\n\nservice anvil {\n  chroot = \n}\nservice imap-login {\n  chroot = \n}\nservice pop3-login {\n  chroot = \n}\n\nservice imap-login {\n  inet_listener imap {\n    port = 10143\n  }\n  inet_listener imaps {\n    port = 10993\n  }\n}\nservice pop3-login {\n  inet_listener pop3 {\n    port = 10110\n  }\n  inet_listener pop3s {\n    port = 10995\n  }\n}\n\nlog_path = $HOME/dovecot/dovecot.log\n\nuserdb {\n	driver = passwd-file\n	args = username_format=%%u $HOME/dovecot/etc/passwd\n}\n\npassdb {\n	driver = passwd-file\n	args = username_format=%%u $HOME/dovecot/etc/passwd\n}\n\nmail_location = maildir:$HOME/dovecot/home/%%n@%%d/Maildir\n" >> $HOME/dovecot/etc/dovecot/dovecot.conf
+
+before_script:
+  - cd $HOME/build/hexhex/imapplugin/tests
+
+script:
+  - python runtests.py $HOME/dovecot/
