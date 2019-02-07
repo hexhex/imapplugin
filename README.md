@@ -6,6 +6,8 @@ This a plugin for interacting with IMAP servers from ACTHEX.
 It partially implements the client-side of the Internet Message Access Protocol (IMAP)
 to allow the integration of email messages into ACTHEX programs.
 
+A brief overview of the external atoms and action atoms this plugin consists of is provided at <http://www.kr.tuwien.ac.at/research/systems/dlvhex/imapplugin.html>.
+
 ## Usage
 
 The IMAP plugin can be used like any other plugin for ACTHEX.
